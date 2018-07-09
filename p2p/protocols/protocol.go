@@ -262,8 +262,6 @@ func (p *Peer) Send(ctx context.Context, msg interface{}) error {
 		}
 
 		writer.Flush()
-
-		log.Debug("peer.send", "successfully injected opentracing context")
 	}
 
 	r, err := rlp.EncodeToBytes(msg)
@@ -317,7 +315,7 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 	// if tracing is enabled and the context coming within the request is
 	// not empty, try to unmarshal it
 	if tracing.Enabled && len(wmsg.Context) > 0 {
-		log.Debug("wmsg.Context handle", "msg", wmsg.Context)
+		//log.Debug("wmsg.Context handle", "msg", wmsg.Context)
 		var sctx opentracing.SpanContext
 
 		tracer := opentracing.GlobalTracer()
@@ -331,9 +329,9 @@ func (p *Peer) handleIncoming(handle func(ctx context.Context, msg interface{}) 
 
 		ctx = spancontext.WithContext(ctx, sctx)
 
-		log.Debug("peer.handleIncoming", "msg", "successfully extracted opentracing context")
+		//log.Debug("peer.handleIncoming", "msg", "successfully extracted opentracing context")
 	} else if tracing.Enabled {
-		log.Debug("peer.handleIncoming", "msg", "opentracing enabled but context is empty")
+		//log.Debug("peer.handleIncoming", "msg", "opentracing enabled but context is empty")
 	}
 
 	val, ok := p.spec.NewMsg(msg.Code)
