@@ -270,7 +270,7 @@ func TestRandomBrokenData(t *testing.T) {
 }
 
 func benchReadAll(reader LazySectionReader) {
-	size, _ := reader.Size(nil)
+	size, _ := reader.Size(context.TODO(), nil)
 	output := make([]byte, 1000)
 	for pos := int64(0); pos < size; pos += 1000 {
 		reader.ReadAt(output, pos)

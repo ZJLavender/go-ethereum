@@ -380,7 +380,7 @@ func (tc *TreeChunker) Append() (Address, func(), error) {
 
 // LazyChunkReader implements LazySectionReader
 type LazyChunkReader struct {
-	ctx       context.Context
+	Ctx       context.Context
 	key       Address // root key
 	chunkData ChunkData
 	off       int64 // offset
@@ -399,7 +399,7 @@ func (tc *TreeChunker) Join() *LazyChunkReader {
 		hashSize:  tc.hashSize,
 		depth:     tc.depth,
 		getter:    tc.getter,
-		ctx:       tc.ctx,
+		Ctx:       tc.ctx,
 	}
 }
 
@@ -442,7 +442,7 @@ func (r *LazyChunkReader) ReadAt(b []byte, off int64) (read int, err error) {
 	var sp opentracing.Span
 	var cctx context.Context
 	cctx, sp = spancontext.StartSpan(
-		r.ctx,
+		r.Ctx,
 		"lcr.read")
 	defer sp.Finish()
 

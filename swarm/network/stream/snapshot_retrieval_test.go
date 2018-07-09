@@ -412,7 +412,7 @@ func runFileRetrievalTest(nodeCount int) error {
 		for i, hash := range conf.hashes {
 			reader, _ := fileStore.Retrieve(context.TODO(), hash)
 			//check that we can read the file size and that it corresponds to the generated file size
-			if s, err := reader.Size(nil); err != nil || s != int64(len(randomFiles[i])) {
+			if s, err := reader.Size(context.TODO(), nil); err != nil || s != int64(len(randomFiles[i])) {
 				allSuccess = false
 				log.Warn("Retrieve error", "err", err, "hash", hash, "nodeId", id)
 			} else {
@@ -699,7 +699,7 @@ func runRetrievalTest(chunkCount int, nodeCount int) error {
 		for _, chnk := range conf.hashes {
 			reader, _ := fileStore.Retrieve(context.TODO(), chnk)
 			//assuming that reading the Size of the chunk is enough to know we found it
-			if s, err := reader.Size(nil); err != nil || s != chunkSize {
+			if s, err := reader.Size(context.TODO(), nil); err != nil || s != chunkSize {
 				allSuccess = false
 				log.Warn("Retrieve error", "err", err, "chunk", chnk, "nodeId", id)
 			} else {
